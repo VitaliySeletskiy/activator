@@ -27,6 +27,10 @@
             </p>
           </dd>
         </dl>
+        <p>
+          <label>Order by</label>
+          <select data-bind="options: filters.orderByValues, optionsText: 'text', optionsValue: 'value', value: filters.orderBy"></select>
+        </p>
         <span>Showing 50 of 277</span>
       </footer>
 
@@ -60,12 +64,12 @@
     <table class="table-list">
       <thead>
         <tr>
-          <th rowspan="2" xdata-bind="click: changeSort('method'), css: { sortBy: 'method' == sortBy() }" class=""><span>Method</span></th>
-          <th><span>Request</span></th>
-          <th rowspan="2" xdata-bind="click: changeSort('responseCode'), css: { sortBy: 'responseCode' == sortBy() }" class=""><span>Response Code</span></th>
-          <th rowspan="2" xdata-bind="click: changeSort('controller'), css: { sortBy: 'controller' == sortBy() }" class=""><span>Controller</span></th>
-          <th rowspan="2" xdata-bind="click: changeSort('invocationTime'), css: { sortBy: 'invocationTime' == sortBy() }" class=""><span>Invocation Time (ms)</span></th>
-          <th rowspan="2" xdata-bind="click: changeSort('time'), css: { sortBy: 'time' == sortBy() }" class=""><span>Time</span></th>
+          <th rowspan="2" data-bind="click: filters.toggleOrdering('httpMethod'), attr: {'data-orderDir': filters.isOrdering('httpMethod') }" class=""><span>Method</span></th>
+          <th data-bind="click: filters.toggleOrdering('path'), attr: {'data-orderDir': filters.isOrdering('path') }"><span>Request</span></th>
+          <th rowspan="2" data-bind="click: filters.toggleOrdering('httpResponseCode'), attr: {'data-orderDir': filters.isOrdering('httpResponseCode') }" class=""><span>Response Code</span></th>
+          <th rowspan="2" data-bind="click: filters.toggleOrdering('controller'), attr: {'data-orderDir': filters.isOrdering('controller') }" class=""><span>Controller</span></th>
+          <th rowspan="2" data-bind="click: filters.toggleOrdering('invocationTimeMillis'), attr: {'data-orderDir': filters.isOrdering('invocationTimeMillis') }" class=""><span>Invocation Time (ms)</span></th>
+          <th rowspan="2" data-bind="click: filters.toggleOrdering('startTimeMillis'), attr: {'data-orderDir': filters.isOrdering('startTimeMillis') }" class=""><span>Time</span></th>
         </tr>
       </thead>
       <tbody class="listing" data-bind="foreach: {data: requests}">
@@ -74,8 +78,8 @@
           <td class="path" data-bind="text: path"></td>
           <td class="response" data-bind="text: httpResponseCode"></td>
           <td class="controller" data-bind="text: controller"></td>
-          <td class="invocation" data-bind="text: invocationTimeMillis"></td>
-          <td class="time" data-bind="text: startTimeMillis"></td>
+          <td class="invocation" data-bind="formatTime: invocationTimeMillis"></td>
+          <td class="time" data-bind="formatDate: startTimeMillis"></td>
         </tr>
       </tbody>
     </table>

@@ -69,6 +69,9 @@ define([
     return monitoringSolutions.inspectActivated() && sbt.tasks.applicationReady() && sbt.tasks.inspectSupported();
   });
 
+  // Start an empty request for echo
+  connection.filters.active([]);
+
   var State = {
     subPlugin: subPlugin,
     sbtExecCommand: sbtExecCommand,

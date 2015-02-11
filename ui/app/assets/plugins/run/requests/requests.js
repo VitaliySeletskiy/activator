@@ -29,21 +29,21 @@ define([
     { value: "startTimeMillis",      text: "Time" }
   ];
 
+  var limitSize       = ko.observable(limitSizeValues[0]);
+  var orderByDesc     = ko.observable(true);
+  var orderBy         = ko.observable(orderByValues[0]);
+  var hideAssets      = ko.observable(false);
   var listFilters = ko.computed(function() {
     return {
-      // limitSize:      limitSize(),
-      sortDirection:  "orderByDesc",
-      sortCommand:    "orderBy"
-      // hideAssets:  hideAssets()
+      limitSize:      limitSize(),
+      sortDirection:  orderByDesc(),
+      sortCommand:    orderBy(),
+      hideAssets:     hideAssets()
     }
   });
   listFilters.subscribe(function(v) {
     requests.setListFilters(v);
   });
-  var limitSize       = ko.observable(limitSizeValues[0]);
-  var orderByDesc     = ko.observable(true);
-  var orderBy         = ko.observable(orderByValues[0]);
-  var hideAssets      = ko.observable(false);
 
 
   var filteredRequestsList = ko.computed(function() {
@@ -52,6 +52,7 @@ define([
 
   function toggleOrdering(name){
     return function() {
+      console.log(name)
       if (orderBy() === name)
         orderByDesc(orderByDesc()==="asc"?"desc":"asc")
       else

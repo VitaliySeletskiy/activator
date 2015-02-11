@@ -347,6 +347,15 @@ define(function() {
     }
   }
 
+  ko.bindingHandlers.formatDate = {
+    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var value = valueAccessor();
+      var date = new Date(value);
+      element.innerText = [date.getHours(),date.getMinutes(),date.getSeconds(),date.getUTCMilliseconds()].join(":");
+    }
+  }
+
+
   ko.bindingHandlers.format = {
     update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
       var __ = valueAccessor(), formatter = __[0], value = __[1];

@@ -78,7 +78,7 @@
           <td class="path" data-bind="text: path"></td>
           <td class="response" data-bind="text: httpResponseCode"></td>
           <td class="controller" data-bind="text: controller"></td>
-          <td class="invocation" data-bind="formatTime: invocationTimeMillis"></td>
+          <td class="invocation" data-bind="text: (parseFloat(invocationTimeMillis)/1000)+' ms'"></td>
           <td class="time" data-bind="formatDate: startTimeMillis"></td>
         </tr>
       </tbody>

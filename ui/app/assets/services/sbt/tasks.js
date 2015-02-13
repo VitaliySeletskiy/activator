@@ -157,6 +157,11 @@ define([
   }
 
   var playApplicationUrl = ko.observable();
+  var playServerStarted = ko.observable(false);
+  // Watch whenever any task ends, because we can't target specifically play stop
+  workingTasks.run.subscribe(function(v) {
+    if (!v) playServerStarted(false);
+  });
 
   /**
   Run command
@@ -272,6 +277,7 @@ define([
       execution.testResults.push(event.serialized);
     } else if (name === "PlayServerStarted") {
       playApplicationUrl(event.serialized.url);
+      playServerStarted(true);
     }
   });
 
@@ -727,6 +733,7 @@ define([
     applicationNotReady:     applicationNotReady,
     isPlayApplication:       isPlayApplication,
     playApplicationUrl:      playApplicationUrl,
+    playServerStarted:        playServerStarted,
     inspectSupported:        inspectSupported,
     whyInspectIsNotSupported: whyInspectIsNotSupported,
     active: {

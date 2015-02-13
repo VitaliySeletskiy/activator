@@ -262,6 +262,8 @@ define([
     var execution = executionsById[tasksById[event.taskId].executionId];
     if (!execution) throw "Orphan task detected";
 
+    // TODO quit doing this, in theory we could look at someone
+    // else's unrelated event
     var name = event.serialized.$type.replace(packageRegexp, "");
 
     if (name === "CompilationFailure") {
@@ -272,6 +274,37 @@ define([
       execution.testResults.push(event.serialized);
     } else if (name === "PlayServerStarted") {
       playApplicationUrl(event.serialized.url);
+    }
+  });
+
+  subTypeEventStream("DetachedEvent").each(function(message) {
+    var event = message.event;
+
+    var name = event.serialized.$type;
+    // Some or all of these RP events arrive before the build
+    // successfully loads, so be aware of that. None of them
+    // arrive if the RP plugin isn't installed, so to handle the
+    // case where you remove RP and reload, we will
+    // need to look at whether we have the RP plugin listed
+    // in MinimalBuildStructure and discard all the RP data if we
+    // load a build with no RP plugin present.
+    if (name === "com.typesafe.rp.protocol.SubscriptionIdEvent") {
+      debug && console.log("SubscriptionIdEvent: ", event.serialized);
+      // event.serialized.fileExists
+      // event.serialized.subscriptionId // may be null
+    } else if (name === "com.typesafe.rp.protocol.SubscriptionLevelEvent") {
+      debug && console.log("SubscriptionLevelEvent: ", event.serialized);
+      // event.serialized.authorizedForProduction
+    } else if (name === "com.typesafe.rp.protocol.PlatformRelease") {
+      debug && console.log("PlatformRelease: ", event.serialized);
+      // event.serialized.availableFullVersion
+      // event.serialized.availableMajorVersion
+      // event.serialized.installedFullVersion
+      // event.serialized.installedMajorVersion
+      // event.serialized.fullUpdate // boolean
+      // event.serialized.majorUpdate // boolean
+    } else {
+      debug && console.log("Ignoring DetachedEvent " + name, event.serialized);
     }
   });
 

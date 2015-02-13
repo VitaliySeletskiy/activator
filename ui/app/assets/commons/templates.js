@@ -347,6 +347,24 @@ define(function() {
     }
   }
 
+  ko.bindingHandlers.formatDate = {
+    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var value = valueAccessor();
+      var date = new Date(value);
+      element.innerText = [date.getHours(),date.getMinutes(),date.getSeconds(),date.getUTCMilliseconds()].join(":");
+    }
+  }
+
+  ko.bindingHandlers.trpify = {
+    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var val = valueAccessor();
+      var txt = ko.isObservable(val)?val():val;
+      $(element).text(txt).html(function(index, text) {
+        return text.replace(/(Typesafe )?Reactive Platform/ig, '<a href="https://typesafe.com/subscription">Typesafe Reactive Platform</a>');
+      });
+    }
+  }
+
   ko.bindingHandlers.format = {
     update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
       var __ = valueAccessor(), formatter = __[0], value = __[1];

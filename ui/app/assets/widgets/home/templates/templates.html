@@ -36,7 +36,7 @@
       </ul>
 
       <ul class="list" data-bind="foreach: filteredTrp, visible: openedTab() == 'trp'">
-        <li class="template certified" data-bind="css: {active: $root.currentAppId() == id}, click: $root.chooseTemplate">
+        <li class="template certified" data-bind="css: {featured: featured, active: $root.currentAppId() == id}, click: $root.chooseTemplate">
           <input type="radio" name="template" data-bind="value: id">
           <span data-bind="text: title"></span>
           <ul class="tags" data-bind="foreach: tags">
@@ -76,7 +76,7 @@
       <ul class="tags" data-bind="foreach: tags">
         <li data-bind="click: $root.searchTag, text: $data"></li>
       </ul>
-      <p data-bind="text: description"></p>
+      <p data-bind="trpify: description"></p>
       <div class="author">
         <p><cite>by <span data-bind="text: authorName"></span>
           <!-- ko if:authorTwitter -->
@@ -89,7 +89,7 @@
       <div class="promote partner">
         <img data-bind="attr: { src: authorLogo }">
         <h4 data-bind="text: authorName"></h4>
-        <p data-bind="text: authorBio"></p>
+        <p data-bind="trpify: authorBio"></p>
       </div>
       <!-- /ko -->
     </div>
